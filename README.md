@@ -1,6 +1,6 @@
-# JS Mini Apps
+# ⚡ JS Mini Apps
 
-A collection of small interactive JavaScript applications built as coding challenges.
+> A collection of small, interactive JavaScript applications built as coding challenges.
 
 ---
 
@@ -28,3 +28,42 @@ js-mini-apps/
 │   └── script.js
 │
 └── README.md
+```
+
+---
+
+## 🌡️ Task 1: Temperature Converter
+
+A frame containing two text fields representing the temperature in **Celsius** and **Fahrenheit**.
+
+---
+
+## ✈️ Task 2: Flight Booker
+
+A frame for booking flights with **form validation** and conditional UI behavior.
+
+---
+
+## 🚀 How to Run
+
+**1. Clone the repository**
+
+```bash
+git clone https://github.com/your-username/js-mini-apps.git
+```
+
+**2. Navigate to the project folder**
+
+```bash
+cd js-mini-apps
+```
+
+**3. Open an app in your browser**
+
+```bash
+# Temperature Converter
+open temp-converter/index.html
+
+# Flight Booker
+open flight-booker/index.html
+```
