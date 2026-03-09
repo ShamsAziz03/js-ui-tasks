@@ -16,12 +16,14 @@
         </section>
         <section class="content">
             <div class="celsiusDiv">
-                <input type="text" id="celsiusTmp" placeholder="ex. 35" alt="input text for Celsius Temperature">
+                <input type="text" id="celsiusTmp" placeholder="ex. 35" alt="input text for Celsius Temperature"
+                    oninput="celsiusCelsiusToFahrenheit()">
                 <label for="celsiusTmp">Celsius</label>
             </div>
             <span>=</span>
             <div class="fahrenheitDiv">
-                <input type="text" id="fahrenheitTmp" placeholder="ex. 35" alt="input text for Fahrenheit Temperature">
+                <input type="text" id="fahrenheitTmp" placeholder="ex. 35" alt="input text for Fahrenheit Temperature"
+                    oninput="celsiusFahrenheitToCelsius()">
                 <label for="fahrenheitTmp">Fahrenheit</label>
             </div>
         </section>
