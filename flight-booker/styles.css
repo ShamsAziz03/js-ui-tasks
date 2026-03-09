@@ -56,6 +56,14 @@ main {
   gap: 10px;
 }
 
+.content button {
+  background-color: black;
+  color: white;
+  font-size: 16px;
+  padding: 8px;
+  font-weight: 800;
+}
+
 @media screen and (max-width: 1000px) {
   main {
     width: 60%;
