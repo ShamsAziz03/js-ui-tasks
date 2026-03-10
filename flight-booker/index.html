@@ -19,25 +19,25 @@
 
             <div class="tripTypeDiv">
                 <label for="tripType">One way or return:</label>
-                <select name="tripType" id="tripType">
-                    <option value="one-way">One way</option>
-                    <option value="return">Return</option>
+                <select name="tripType" id="tripType" onchange="switchReturnDateStatus()">
+                    <option value="one-way">One-way flight</option>
+                    <option value="return">Return flight</option>
                 </select>
             </div>
 
             <div class="departureDateDiv">
                 <label for="departureDate">Departure Date (format: DD.MM.YYYY) :</label>
                 <input type="text" id="departureDate" name="departureDate" placeholder="25.12.1995"
-                    alt="input date for departure date">
+                    alt="input date for departure date" oninput="validateDepartureDate()">
             </div>
 
             <div class="returnDateDiv">
-                <label for="returnDate">Departure Date (format: DD.MM.YYYY) :</label>
+                <label for="returnDate">Return Date (format: DD.MM.YYYY) :</label>
                 <input type="text" id="returnDate" name="returnDate" placeholder="25.12.1995"
-                    alt="input date for departure date">
+                    alt="input date for departure date" disabled oninput="validateReturnDate()">
             </div>
 
-            <button>BOOK</button>
+            <button id="sumbitButton" onclick="handleBookButton()">BOOK</button>
         </section>
     </main>
 </body>
