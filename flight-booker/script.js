@@ -3,13 +3,9 @@ const elements = {
     input: document.getElementById("returnDate"),
     getIsoFormat: () => {
       let returnDate = elements.returnDate.input.value;
+      let results = returnDate.match(/[0-9]{2}\.[0-9]{2}\.[0-9]{4}/g);
+      if (!results) return null;
       let dateParts = returnDate.split(".");
-      if (dateParts.length !== 3) return null;
-      if (
-        (dateParts[0].length !== 2 || dateParts[1].length !== 2) ||
-        dateParts[2].length !== 4
-      )
-        return null;
       let isoDate = [...dateParts].reverse().join("-");
       const returnISODate = new Date(isoDate);
       if (isNaN(returnISODate.getTime())) {
@@ -31,12 +27,8 @@ const elements = {
     getIsoFormat: () => {
       let departureDate = elements.departureDate.input.value;
       let dateParts = departureDate.split(".");
-      if (dateParts.length !== 3) return null;
-      if (
-        (dateParts[0].length !== 2 || dateParts[1].length !== 2) ||
-        dateParts[2].length !== 4
-      )
-        return null;
+      let results = departureDate.match(/[0-9]{2}\.[0-9]{2}\.[0-9]{4}/g);
+      if (!results) return null;
       let isoDate = [...dateParts].reverse().join("-");
       const departureISODate = new Date(isoDate);
       if (isNaN(departureISODate.getTime())) {
