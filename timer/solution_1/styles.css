@@ -1,0 +1,87 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+main {
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 2px 5px black;
+  border-radius: 10px;
+  border: 1px solid black;
+}
+
+.header h1 {
+  text-align: center;
+  background-color: black;
+  color: white;
+  padding: 10px;
+  margin: 0px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  font-size: 20px;
+}
+.content {
+  padding: 40px 40px 10px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.content label,
+.content p {
+  font-size: 1.3rem;
+  margin: 0px;
+}
+
+.elapsedTimeDiv,
+.durationDiv,
+#myProgress {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+
+.content button {
+  background-color: black;
+  color: white;
+  font-size: 16px;
+  padding: 8px;
+  font-weight: 800;
+}
+
+#elapsedTime {
+  width: 100%;
+  background-color: #ddd;
+  align-self: center;
+  height: 20px;
+  border-radius: 30px;
+}
+#myBar {
+  width: 0%;
+  background-color: #04aa6d;
+  color: white;
+  height: 20px;
+  border-radius: 30px;
+}
+
+@media screen and (max-width: 1000px) {
+  main {
+    width: 60%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  main {
+    width: 80%;
+  }
+}
