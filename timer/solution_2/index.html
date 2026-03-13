@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles.css">
+    <title>Timer</title>
+    <script src="./script.js" defer></script>
+</head>
+
+<body>
+    <main>
+        <section class="header">
+            <h1>Timer</h1>
+        </section>
+
+        <section class="content">
+            <div class="elapsedTimeDiv">
+                <label for="elapsedTime">Elapsed Time</label>
+                <progress id="elapsedTime" max="100" value="0"><span>0%</span></progress>
+            </div>
+
+            <div class="elapsedTimeNumber">
+                <p id="elapsedNumber">0s</p>
+            </div>
+
+            <div class="durationDiv">
+                <label for="duration">Select Range</label>
+                <input type="range" id="duration" name="duration" value="0" min="0" max="100"
+                    alt="range input to let user choose duration time" oninput="changeTimeDuration()">
+            </div>
+
+            <button id="resetButton" onclick="resetButton()">RESET</button>
+        </section>
+    </main>
+</body>
+
+</html>
