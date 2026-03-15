@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles.css">
+    <title>CRUD Operations</title>
+    <script src="./script.js" defer></script>
+</head>
+
+<body>
+    <main>
+        <section class="header">
+            <h1>CRUD</h1>
+        </section>
+
+        <section class="filterPrefixSection">
+            <label for="filterPrefix">Filter prefix:</label>
+            <input type="text" id="filterPrefix" name="filterPrefix" placeholder="ex. smith"
+                alt="input text for filter Prefix" oninput="search()">
+        </section>
+
+        <section class="namesListSection">
+            <select name="namesList" id="namesList" size="7"></select>
+        </section>
+
+        <section class="nameSurnameSection">
+            <div class="nameDiv">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" placeholder="ex. sally" alt="input text for user's name">
+            </div>
+            <div class="surNameDiv">
+                <label for="surName">Surname:</label>
+                <input type="text" id="surName" name="surName" placeholder="ex. smith"
+                    alt="input text for user's surname">
+            </div>
+        </section>
+
+        <section class="buttons">
+            <button id="createButton" onclick="addName()">CREATE</button>
+            <button id="updateButton" onclick="updateName()" disabled>UPDATE</button>
+            <button id="deleteButton" onclick="deleteName()" disabled>DELETE</button>
+        </section>
+    </main>
+</body>
+
+</html>
