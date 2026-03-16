@@ -91,13 +91,10 @@ function deleteName() {
     alert("Fill All input Please!");
     return;
   }
-  const fullName = elements.userName.value + " " + elements.userSurname.value;
-  if (!checkNameExist(fullName)) {
-    alert("Name not exist to delete!");
-    return;
-  }
 
-  elements.names = elements.names.filter((name) => name !== fullName);
+  elements.names = elements.names.filter(
+    (name) => name !== elements.selectedOption.value,
+  );
   renderNames(elements.names);
   alert("Name deleted Successfully");
   clearInputs();
