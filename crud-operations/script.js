@@ -49,8 +49,9 @@ function renderNames(names) {
 }
 
 function checkFullInput(name, surname) {
-  if (name === "" || surname === "") return false;
-  return true;
+  return !name || !surname; //using falsy values in js (empty string)
+  //or
+  // return (!(name === "" || surname === ""));
 }
 
 function checkNameExist(name) {
