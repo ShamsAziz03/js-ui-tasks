@@ -2,35 +2,36 @@ const elements = {
   userInputDuration: document.getElementById("duration"),
   elapsedNumber: document.getElementById("elapsedNumber"),
   elapsedBar: document.getElementById("myBar"),
-  flagStartInterval: 0,
+  isIntervalRunning: false,
   elapsedWidth: 0,
-  intervalFunction: () => {},
+  intervalId: 0,
+  inputDurationNumber: 0,
 };
 
+function frame() {
+  if (elements.elapsedWidth >= elements.inputDurationNumber) {
+    clearInterval(elements.intervalId);
+    elements.isIntervalRunning = false;
+  } else {
+    elements.elapsedWidth++;
+    elements.elapsedBar.style.width =
+      (elements.elapsedWidth / elements.inputDurationNumber) * 100 + "%";
+    elements.elapsedNumber.innerText = elements.elapsedWidth + "s";
+  }
+}
+
 function move() {
-  if (elements.flagStartInterval == 0) {
-    elements.flagStartInterval = 1;
-    intervalFunction = setInterval(frame, 1000);
-    function frame() {
-      if (elements.elapsedWidth >= Number(elements.userInputDuration.value)) {
-        clearInterval(intervalFunction);
-        elements.flagStartInterval = 0;
-      } else {
-        elements.elapsedWidth++;
-        elements.elapsedBar.style.width =
-          (elements.elapsedWidth / Number(elements.userInputDuration.value)) *
-            100 +
-          "%";
-        elements.elapsedNumber.innerText = elements.elapsedWidth + "s";
-      }
-    }
+  if (!elements.isIntervalRunning) {
+    elements.isIntervalRunning = true;
+    elements.intervalId = setInterval(frame, 1000);
   }
 }
 
 function changeTimeDuration() {
-  if (elements.elapsedWidth >= Number(elements.userInputDuration.value)) {
-    clearInterval(intervalFunction);
-    elements.flagStartInterval = 0;
+  elements.inputDurationNumber = Number(elements.userInputDuration.value);
+  if (elements.elapsedWidth >= elements.inputDurationNumber) {
+    clearInterval(elements.intervalId);
+    elements.isIntervalRunning = false;
     elements.elapsedWidth = 0;
     elements.elapsedNumber.innerText = "0s";
     elements.elapsedBar.style.width = "0%";
@@ -39,8 +40,8 @@ function changeTimeDuration() {
 }
 
 function resetButton() {
-  clearInterval(intervalFunction);
-  elements.flagStartInterval = 0;
+  clearInterval(elements.intervalId);
+  elements.isIntervalRunning = false;
   elements.elapsedWidth = 0;
   elements.userInputDuration.value = "0";
   elements.elapsedNumber.innerText = "0s";

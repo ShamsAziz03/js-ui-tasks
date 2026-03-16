@@ -4,14 +4,14 @@ const elements = {
   elapsedBar: document.getElementById("elapsedTime"),
   elapsedTime: 0,
   timeOutId: 0,
-  newTimeOut: 1,
+  isTimerRunning: false,
+  inputDurationNmber: 0,
 };
 
 function count() {
-  const inputDuration = Number(elements.userInputDuration.value);
-  if (elements.elapsedTime >= inputDuration) {
+  if (elements.elapsedTime >= elements.inputDurationNumber) {
     clearTimeout(elements.timeOutId);
-    elements.newTimeOut = 1;
+    elements.isTimerRunning = false;
     return;
   } else {
     elements.elapsedTime++;
@@ -23,23 +23,24 @@ function count() {
 }
 
 function changeTimeDuration() {
+  elements.inputDurationNumber = Number(elements.userInputDuration.value);
   //edge case when user change value to lower
-  if (elements.elapsedTime >= Number(elements.userInputDuration.value)) {
+  if (elements.elapsedTime >= elements.inputDurationNumber) {
     clearTimeout(elements.timeOutId);
-    elements.newTimeOut = 1;
+    elements.isTimerRunning = false;
     elements.elapsedTime = 0;
     elements.elapsedBar.value = "0";
     elements.elapsedNumberElement.innerText = "0s";
   }
-  if (elements.newTimeOut === 1) {
-    elements.newTimeOut = 0;
+  if (!elements.isTimerRunning) {
+    elements.isTimerRunning = true;
     count();
   }
 }
 
 function resetButton() {
   clearTimeout(elements.timeOutId);
-  elements.newTimeOut = 1;
+  elements.isTimerRunning = false;
   elements.elapsedTime = 0;
   elements.elapsedBar.value = "0";
   elements.elapsedNumberElement.innerText = "0s";
