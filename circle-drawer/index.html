@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circle Drawer</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./script.js" defer></script>
+</head>
+
+<body>
+    <main>
+        <section class="header">
+            <h1 id="header">Circle Drawer</h1>
+        </section>
+
+        <section class="buttons">
+            <button id="undoButton" disabled>UNDO</button>
+            <button id="redoButton" disabled>REDO</button>
+        </section>
+
+        <section class="canvas">
+            <canvas id="canvas"></canvas>
+        </section>
+    </main>
+    <div id="popUpWindow">
+        <button id="closeWindowButton">X</button>
+        <p id="contentOfWindow">
+            adjust diameter of circle
+        </p>
+        <input type="range" id="diameterInput" max="200" value="0" min="0"
+            alt="range input to change diameter of circle choosed" />
+    </div>
+</body>
+
+</html>
