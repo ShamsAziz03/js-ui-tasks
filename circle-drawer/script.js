@@ -94,8 +94,7 @@ function undo() {
       if (
         elements.circles[i].x === elements.lastChange.newCircle.x &&
         elements.circles[i].y === elements.lastChange.newCircle.y &&
-        elements.circles[i].r === elements.lastChange.newCircle.r &&
-        elements.circles[i].color === elements.lastChange.newCircle.color
+        elements.circles[i].r === elements.lastChange.newCircle.r
       ) {
         elements.circles = elements.circles.filter(
           (c) => c !== elements.circles[i],
