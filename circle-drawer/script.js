@@ -7,6 +7,12 @@ const elements = {
   closeWindowButton: document.getElementById("closeWindowButton"),
   diameterInput: document.getElementById("diameterInput"),
   selectedCircle: null,
+  lastChange: {
+    type: "createCircle", //or "changeDiameter"
+    oldCircle: null,
+    newCircle: null,
+  },
+  undoButton: document.getElementById("undoButton"),
 };
 
 function drawCircle(evt) {
@@ -23,15 +29,23 @@ function drawCircle(evt) {
   circle.arc(centerX, centerY, raduis, 0, 2 * Math.PI, false);
 
   //add circle center to the array of what drawing
-  elements.circles.push({
+  const newCircle = {
     x: centerX,
     y: centerY,
     color: "black",
     r: raduis,
-  });
+  };
+  elements.circles.push(newCircle);
 
   elements.context.fillStyle = "black";
   elements.context.fill(circle);
+
+  elements.lastChange = {
+    type: "createCircle",
+    oldCircle: null,
+    newCircle: newCircle,
+  };
+  elements.undoButton.disabled = false;
 }
 
 function showMenu() {
@@ -74,6 +88,36 @@ function redrawCircles() {
   });
 }
 
+function undo() {
+  if (elements.lastChange.type === "createCircle") {
+    for (let i = 0; i < elements.circles.length; i++) {
+      if (
+        elements.circles[i].x === elements.lastChange.newCircle.x &&
+        elements.circles[i].y === elements.lastChange.newCircle.y &&
+        elements.circles[i].r === elements.lastChange.newCircle.r &&
+        elements.circles[i].color === elements.lastChange.newCircle.color
+      ) {
+        elements.circles = elements.circles.filter(
+          (c) => c !== elements.circles[i],
+        );
+        redrawCircles();
+        return;
+      }
+    }
+  } else if (elements.lastChange.type === "changeDiameter") {
+    for (let i = 0; i < elements.circles.length; i++) {
+      if (
+        elements.circles[i].x === elements.lastChange.newCircle.x &&
+        elements.circles[i].y === elements.lastChange.newCircle.y
+      ) {
+        elements.circles[i].r = elements.lastChange.oldCircle.r;
+        redrawCircles();
+        return;
+      }
+    }
+  }
+}
+
 // To prevent default operation of right mouse click
 document.addEventListener("contextmenu", function (event) {
   event.preventDefault();
@@ -113,7 +157,7 @@ elements.canvas.addEventListener("mousemove", (evt) => {
           nearestPoint = k;
         }
       }
-    } 
+    }
   }
 
   if (nearestPoint) {
@@ -139,7 +183,12 @@ elements.closeWindowButton.addEventListener("click", () => {
 
 elements.diameterInput.addEventListener("input", (event) => {
   if (elements.selectedCircle !== null) {
+    elements.lastChange = {
+      type: "changeDiameter",
+      oldCircle: { ...elements.selectedCircle },
+    };
     elements.selectedCircle.r = Number(event.target.value) / 2;
+    elements.lastChange.newCircle = { ...elements.selectedCircle };
     redrawCircles();
   }
 });
