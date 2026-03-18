@@ -107,8 +107,7 @@ function undo() {
     for (let i = 0; i < elements.circles.length; i++) {
       if (
         elements.circles[i].x === elements.lastChange.newCircle.x &&
-        elements.circles[i].y === elements.lastChange.newCircle.y &&
-        elements.circles[i].r === elements.lastChange.newCircle.r
+        elements.circles[i].y === elements.lastChange.newCircle.y
       ) {
         elements.circles[i].r = elements.lastChange.oldCircle.r;
         redrawCircles();
