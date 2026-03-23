@@ -67,7 +67,17 @@ main {
 }
 
 #popUpWindow {
-  display: none;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(255, 255, 255);
+  border: 2px solid black;
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  padding: 10px;
+  visibility: hidden;
 }
 
 #popUpWindow button {

@@ -13,10 +13,21 @@ const elements = {
     newCircle: null,
   },
   undoButton: document.getElementById("undoButton"),
+  mainSection: document.getElementById("main"),
 };
 
-function drawCircle(evt) {
+function setCanvasDimensions() {
+  //to let dimensions of canvas to be the same (real one with styled one)
+  elements.canvas.width = elements.canvas.clientWidth; //from CSS file
+  elements.canvas.height = elements.canvas.clientHeight;
+}
+
+function init() {
+  setCanvasDimensions();
   elements.context = elements.canvas.getContext("2d");
+}
+
+function drawCircle(evt) {
   const rect = elements.canvas.getBoundingClientRect();
   const centerX = evt.clientX - rect.left;
   const centerY = evt.clientY - rect.top;
@@ -30,6 +41,7 @@ function drawCircle(evt) {
 
   //add circle center to the array of what drawing
   const newCircle = {
+    id: crypto.randomUUID(), //to creaate a uniqe id
     x: centerX,
     y: centerY,
     color: "black",
@@ -49,27 +61,10 @@ function drawCircle(evt) {
 }
 
 function showMenu() {
-  elements.popUpWindow.style.cssText = `
-  display:flex;
-  flex-direction:column;
-  background-color: rgb(255, 255, 255);
-  border: 2px solid black;
-  position:absolute;
-  top:60%;
-  left:50%;
-  transform: translate(-50%,-50%);
-  z-index:1000;
-  padding:10px;
-  `;
+  elements.popUpWindow.style.visibility = "visible";
   document.getElementById("contentOfWindow").innerText =
     ` Adjust diameter of circle at (${elements.selectedCircle.x}, ${elements.selectedCircle.y})`;
   elements.diameterInput.value = `${elements.selectedCircle.r * 2}`;
-}
-
-function setCanvasDimensions() {
-  //to let dimensions of canvas to be the same (real one with styled one)
-  elements.canvas.width = elements.canvas.clientWidth; //from CSS file
-  elements.canvas.height = elements.canvas.clientHeight;
 }
 
 function redrawCircles() {
@@ -90,25 +85,13 @@ function redrawCircles() {
 
 function undo() {
   if (elements.lastChange.type === "createCircle") {
-    for (let i = 0; i < elements.circles.length; i++) {
-      if (
-        elements.circles[i].x === elements.lastChange.newCircle.x &&
-        elements.circles[i].y === elements.lastChange.newCircle.y &&
-        elements.circles[i].r === elements.lastChange.newCircle.r
-      ) {
-        elements.circles = elements.circles.filter(
-          (c) => c !== elements.circles[i],
-        );
-        redrawCircles();
-        return;
-      }
-    }
+    elements.circles = elements.circles.filter(
+      (c) => c.id !== elements.lastChange.newCircle.id,
+    );
+    redrawCircles();
   } else if (elements.lastChange.type === "changeDiameter") {
     for (let i = 0; i < elements.circles.length; i++) {
-      if (
-        elements.circles[i].x === elements.lastChange.newCircle.x &&
-        elements.circles[i].y === elements.lastChange.newCircle.y
-      ) {
+      if (elements.lastChange.newCircle.id === elements.circles[i].id) {
         elements.circles[i].r = elements.lastChange.oldCircle.r;
         redrawCircles();
         return;
@@ -118,9 +101,8 @@ function undo() {
 }
 
 // To prevent default operation of right mouse click
-document.addEventListener("contextmenu", function (event) {
+elements.mainSection.addEventListener("contextmenu", function (event) {
   event.preventDefault();
-  console.log("Default context menu prevented!");
 });
 
 elements.canvas.addEventListener("mousedown", function (evt) {
@@ -136,51 +118,47 @@ elements.canvas.addEventListener("mousemove", (evt) => {
   const currentX = evt.offsetX;
   const currentY = evt.offsetY;
 
-  let insideCircle = false;
-  let nearestPoint = null;
+  elements.circles.forEach((c) => (c.color = "black"));
 
-  for (const k of elements.circles) {
-    k.color = "black";
-    const dx = k.x - currentX;
-    const dy = k.y - currentY;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-
-    if (distance <= k.r) //so u r in the circle
-    {
-      if (!nearestPoint) nearestPoint = k;
-      else {
-        const ndx = nearestPoint.x - currentX;
-        const ndy = nearestPoint.y - currentY;
-        const nearestDistance = Math.sqrt(ndx * ndx + ndy * ndy);
-        if (nearestDistance >= distance) {
-          nearestPoint = k;
+  let { circle } =
+    elements.circles
+      .map(function circleDistance(k) {
+        const dx = k.x - currentX;
+        const dy = k.y - currentY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance <= k.r)
+          return {
+            distance,
+            circle: k,
+          };
+        else {
+          return null; //must return null if distance grater than raduis
         }
-      }
-    }
-  }
+      })
+      .reduce(function isNearestCircle(lastObj, obj) {
+        if (!lastObj && obj) return obj;
+        if (!obj && lastObj) return lastObj;
+        if (lastObj && obj && lastObj.distance >= obj.distance) return obj;
+        return lastObj;
+      }, null) ?? {};
 
-  if (nearestPoint) {
-    elements.hoveredCircle = nearestPoint;
+  if (circle) {
+    elements.hoveredCircle = circle;
     elements.hoveredCircle.color = "gray";
-    insideCircle = true;
+  } else {
+    elements.hoveredCircle = null;
   }
 
   redrawCircles();
-
-  if (!insideCircle) {
-    if (elements.hoveredCircle) {
-      //!=null
-      elements.hoveredCircle = null;
-    }
-  }
 });
 
 elements.closeWindowButton.addEventListener("click", () => {
-  elements.popUpWindow.style.display = "none";
+  elements.popUpWindow.style.visibility = "hidden";
   elements.selectedCircle = null;
 });
 
-elements.diameterInput.addEventListener("input", (event) => {
+elements.diameterInput.addEventListener("change", (event) => {
+  //use change event not input
   if (elements.selectedCircle !== null) {
     elements.lastChange = {
       type: "changeDiameter",
@@ -192,4 +170,4 @@ elements.diameterInput.addEventListener("input", (event) => {
   }
 });
 
-setCanvasDimensions();
+init();
