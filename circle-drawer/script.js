@@ -14,6 +14,12 @@ const elements = {
   },
   undoButton: document.getElementById("undoButton"),
   mainSection: document.getElementById("main"),
+  redoButton: document.getElementById("redoButton"),
+  lastUndoChange: {
+    type: "createCircle", //or "changeDiameter"
+    oldCircle: null,
+    newCircle: null,
+  },
 };
 
 function setCanvasDimensions() {
@@ -84,15 +90,43 @@ function redrawCircles() {
 }
 
 function undo() {
+  elements.redoButton.disabled = false;
   if (elements.lastChange.type === "createCircle") {
+    elements.lastUndoChange = {
+      type: "createCircle",
+      newCircle: { ...elements.lastChange.newCircle },
+      oldCircle: null,
+    };
+
     elements.circles = elements.circles.filter(
       (c) => c.id !== elements.lastChange.newCircle.id,
     );
     redrawCircles();
   } else if (elements.lastChange.type === "changeDiameter") {
+    elements.lastUndoChange = {
+      type: "changeDiameter",
+      oldCircle: { ...elements.lastChange.newCircle },
+      newCircle: { ...elements.lastChange.oldCircle },
+    };
+
     for (let i = 0; i < elements.circles.length; i++) {
       if (elements.lastChange.newCircle.id === elements.circles[i].id) {
         elements.circles[i].r = elements.lastChange.oldCircle.r;
+        redrawCircles();
+        return;
+      }
+    }
+  }
+}
+
+function redo() {
+  if (elements.lastUndoChange.type === "createCircle") {
+    elements.circles.push(elements.lastUndoChange.newCircle);
+    redrawCircles();
+  } else if (elements.lastUndoChange.type === "changeDiameter") {
+    for (let i = 0; i < elements.circles.length; i++) {
+      if (elements.lastUndoChange.newCircle.id === elements.circles[i].id) {
+        elements.circles[i].r = elements.lastUndoChange.oldCircle.r;
         redrawCircles();
         return;
       }
